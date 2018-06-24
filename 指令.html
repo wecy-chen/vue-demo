@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>指令</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<button v-color='flag'>变色</button>
+		     <div v-drag :style="{width:'100px', height:'100px', background:'blue', position:'absolute', right:0, top:0}"></div>
+        <div v-drag :style="{width:'100px', height:'100px', background:'red', position:'absolute', left:0, top:0}"></div>
+	</div>
+	<script>
+	//好处 可以使用多个指令控制div
+	Vue.directive('drag',function(el){ //自定全局拖拽指令
+            el.onmousedown=function(ev){ //按下
+                var disX=ev.clientX-el.offsetLeft; //鼠标到div边框的距离
+                var disY=ev.clientY-el.offsetTop;
+
+                document.onmousemove=function(ev){ //移动
+                    var l=ev.clientX-disX; //div随移动鼠标偏移
+                    var t=ev.clientY-disY;
+                    el.style.left=l+'px';
+                    el.style.top=t+'px';
+                };
+
+                 document.onmouseup=function(){ //松起
+                    document.onmousemove=null;
+                    document.onmouseup=null;
+                };
+            };
+             
+        });
+
+		new Vue({
+			directives:{ //自定color指令方法
+				color(el,bindings){ 
+					el.style.background=bindings.value
+				}
+			},
+			el:'#app',
+			data:{
+				flag:'red'
+			}
+		})
+	</script>
+</body>
+</html>

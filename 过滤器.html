@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        {{msg | my}}
+        <!-- 装饰过滤器 -->
+        <br> {{'111' | test('参数')}}
+        <!--内置111参数-->
+        <br> {{time | date}}
+        <!-- 2018-6-24 16:55:50 -->
+        <br> {{number | toFixed(2)}}
+        <!--¥1.23-->
+        <br> {{html | filterHTML}} <!-- p内容 -->
+    </div>
+    <script>
+    Vue.filter('my', (data) => { //要放在vue挂载对象前
+        return '装饰' + data
+    })
+
+    Vue.filter('date', (input) => {
+        var oDate = new Date(input);
+        return oDate.getFullYear() + '-' + (oDate.getMonth() + 1) + '-' + oDate.getDate() + ' ' + oDate.getHours() + ':' + oDate.getMinutes() + ':' + oDate.getSeconds();
+    })
+
+    // Vue.filter('filterHtml', { //// 过滤html标签  错误
+    //     read: function(input) { //model-view
+    //         return (input.replace(/<[^<]+>/g, ''));
+    //     },
+    //     write: function(val) { //view -> model
+    //         return val;
+    //     }
+    // });
+    new Vue({
+        data: {
+            msg: '过滤器',
+            time: new Date(),
+            number: 1.226565,
+            html: '<p>p内容</p>'
+        },
+        filters: { //内置过滤器
+            test(data, param) {
+                return '内置' + data + param
+            },
+            toFixed(input, param) { //货币 小数点两位
+                return '¥' + input.toFixed(param)
+            },
+            filterHTML(input) { // 过滤html标签
+                console.log(input)
+                return (input.replace(/<[^<]+>/g, ''))
+            }
+        }
+    }).$mount('#app')
+    </script>
+</body>
+
+</html>

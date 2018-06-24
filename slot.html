@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SLOT</title>
+	 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+</head>
+<body>
+  <div id="box">
+    <aaa>
+    </aaa>
+  </div>
+
+  <template id="aaa">
+    <div>
+      <h1>xxxx</h1>
+			<slot name="ul-slot">这是默认的情况</slot>
+    </div>
+  </template>
+  
+  <script>
+    var vm=new Vue({
+      el:'#box',
+      components:{
+        aaa:{    //注册组件
+            template:"#aaa"
+        }
+      }
+    });
+  </script>
+</body>
+</html>

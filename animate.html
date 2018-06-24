@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <input type="text" v-model="show">
+  <transition-group enter-active-class="zoomInLeft" leave-active-class="zoomOutRight">
+    <p v-show="show" class="animated" v-for="(val,index) in lists" :key="index">
+      {{val}}
+    </p>
+  </transition-group>
+  数组:['apple','banana','orange','pear']
+</div>
+
+<script>
+  let vm=new Vue({
+      el:'#app',
+      data:{
+          show:'',
+          list:['apple','banana','orange','pear']
+      },
+      computed:{
+          lists:function(){
+              var arr=[];
+              this.list.forEach(function(val){
+                  if(val.indexOf(this.show)!==-1){  //按输入的内容渲染li的个数
+                      arr.push(val);
+                  }
+              }.bind(this));
+              return arr;
+          }
+      }
+  })
+</script>
+</body>
+</html>
