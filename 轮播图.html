@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>vue-轮播图</title>
+	<!--css ,js-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/css/swiper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.7/js/swiper.min.js"></script>
+<!-- Vue -->
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-awesome-swiper@3.1.2/dist/vue-awesome-swiper.js"></script> 
+</head>
+<body>
+	<div id="vueapp">
+    <p>{{message}}</p>
+    <swiper ref="awesomeSwiperA" :options="swiperOptionA" @set-translate="onSetTranslate">
+      <!-- 滑动内容 -->
+      <swiper-slide>I'm Slide 1</swiper-slide>
+      <swiper-slide>I'm Slide 2</swiper-slide>
+      <swiper-slide>I'm Slide 3</swiper-slide>
+      <swiper-slide>I'm Slide 4</swiper-slide>
+      <swiper-slide>I'm Slide 5</swiper-slide>
+      <swiper-slide>I'm Slide 6</swiper-slide>
+      <swiper-slide>I'm Slide 7</swiper-slide>
+      <!--  分页,左,右 -->
+      <div class="swiper-pagination"  slot="pagination"></div>
+      <div class="swiper-button-prev" slot="button-prev"></div>
+      <div class="swiper-button-next" slot="button-next"></div>
+    </swiper>
+    <br>
+    <!--vue-轮播图vue-swiper-->
+    <local-swiper ref="awesomeSwiperB" :options="swiperOptionB">
+        <local-slide v-for="i in 7">I'm Slide {{ i }}</local-slide>
+        <div class="swiper-pagination"  slot="pagination"></div>
+    </local-swiper>
+</div>
+<script>
+	Vue.use(VueAwesomeSwiper) //注册vue-swiper
+	new Vue({
+	 el: '#vueapp',
+   components: {  //注册vue组件
+      LocalSwiper: VueAwesomeSwiper.swiper,
+    	LocalSlide: VueAwesomeSwiper.swiperSlide,
+	 },
+	 data: {
+     message: 'swiper和vue-awesome-swiper两种',
+     swiperOptionA: { //swiperA配置
+     		pagination: { //分页
+          el: '.swiper-pagination' //class
+        },
+        navigation: { //左右按钮
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+     },
+     swiperOptionB: {//vue-swiper 配置
+        pagination: { //分页
+          el: '.swiper-pagination',  //class
+          dynamicBullets: true  //slide很多时，开启后，分页器小点的数量会部分隐藏
+        },
+        loop:true //循环
+     }
+	 },
+   computed: {
+      swiperA() {
+        return this.$refs.awesomeSwiperA.swiper  //A对象
+      },
+      swiperB() {
+        return this.$refs.awesomeSwiperB.swiper //b对象
+      }
+    },
+    methods: {
+    	onSetTranslate() { //swiper滑动触发
+      	console.log('onSetTranslate')
+      }
+    },
+    mounted() { //A,B两部分对象
+      console.log('this is swiper A instance object', this.swiperA, 'B instance', this.swiperB)
+    }
+	})
+</script>
+<style>
+	.swiper-container { /*区域*/
+  height: 300px;
+  width: 100%;
+}
+
+.swiper-slide {  /*滑动内容*/
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  background-color: #eee;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+</style>
+</body>
+</html>
