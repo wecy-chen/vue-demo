@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue-生命周期</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+</head>
+<body>
+  <div id="test">
+    <button @click="destoryVM">destroy vm</button>
+    <p v-show="isShow">显示和隐藏</p>
+  </div>
+  <script>
+    new Vue({
+      el:'#test',
+      data:{
+        isShow:true,
+        IntervalId:''
+      },
+      //1.初始化阶段
+      beforeCreate(){
+        console.log("beforeCreate()");
+      },
+      created(){
+        console.log('create()');
+      },
+      beforeMount(){
+        console.log('beforeMount()');
+      },
+      mounted(){ //初始化后之后立即调用 1次
+        console.log('mounted()');
+        this.intervalId = setInterval(()=>{
+          console.log('----');
+          this.isShow=!this.isShow
+        },1000)
+      },
+      //2. 更新阶段
+      beforeUpdate(){
+        console.log('beforeUpdate()');
+      },
+      updated(){
+        console.log('updated');
+      },
+      //3.销毁阶段
+      beforeDestory(){ // 销毁之前调用 1次
+        //清除定时器
+        clearInterval(this.intervalId)
+      },
+      destroy(){
+        console.log('destroy()');
+      },
+      methods:{
+        destoryVM (){
+          // 干掉vm
+          this.$destroy()
+        }
+      }
+    })
+  </script>
+</body>
+</html>
